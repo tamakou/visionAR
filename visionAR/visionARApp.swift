@@ -1,33 +1,19 @@
-//
-//  visionARApp.swift
-//  visionAR
-//
-//  Created by tamakou on 2025/10/20.
-//
-
 import SwiftUI
 
 @main
-struct visionARApp: App {
-
-    @State private var appModel = AppModel()
+struct VisionARApp: App {
+    @State private var viewModel = AppViewModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(appModel)
+            MainWindowView()
+                .environment(viewModel)
         }
-        .windowStyle(.volumetric)
+        .defaultSize(width: 640, height: 480)
 
-        ImmersiveSpace(id: appModel.immersiveSpaceID) {
-            ImmersiveView()
-                .environment(appModel)
-                .onAppear {
-                    appModel.immersiveSpaceState = .open
-                }
-                .onDisappear {
-                    appModel.immersiveSpaceState = .closed
-                }
+        ImmersiveSpace(id: "ImmersiveSpace") {
+            ImmersiveOverlayView()
+                .environment(viewModel)
         }
         .immersionStyle(selection: .constant(.mixed), in: .mixed)
     }
